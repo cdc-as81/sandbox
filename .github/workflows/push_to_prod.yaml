@@ -35,6 +35,7 @@ jobs:
             core.setFailed('No approvals from code owners.');
           } else {
             console.log(`Found ${approvals.length} approval(s)`);
+            console.log(`Found ${approvals}`);
           }
     - name: Pull from main and push to production
       if: success()
