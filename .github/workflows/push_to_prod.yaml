@@ -31,7 +31,7 @@ jobs:
           console.log(context.repo.owner);
           const codeOwners = ['cdc-as81', 'gilsharon321']; // Replace with actual code owners
           const reviewsFromCodeOwners = reviews.filter(r =>
-            r.state === 'APPROVED' && codeOwners.includes(r.user.login)
+            r.state === 'APPROVED' && codeOwners.includes(r.user.login));
 
           if (reviewsFromCodeOwners.length === 0) {
             core.setFailed('No approvals from code owners.');
