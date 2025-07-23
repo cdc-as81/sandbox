@@ -28,14 +28,17 @@ jobs:
             repo: context.repo.repo,
             pull_number: prNumber
           });
+          # make sure there is a code owner approval
+          # get code owners from the repository (.github/CODEOWNERS), read the file and load the code owners
+          console.log(context.repo.owner)
+          const codeOwners = ""
+          const reviewsFromCodeOwners = reviews.filter(r =>
+            r.state === 'APPROVED' && codeOwners.includes(r.user.login)
 
-          const approvals = reviews.filter(r => r.state === 'APPROVED');
-
-          if (approvals.length === 0) {
+          if (reviewsFromCodeOwners.length === 0) {
             core.setFailed('No approvals from code owners.');
           } else {
             console.log(`Found ${approvals.length} approval(s)`);
-            console.log(`Found ${approvals[0].user.login} as the first approver`);
           }
     - name: Pull from main and push to production
       if: success()
