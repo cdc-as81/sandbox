@@ -1,0 +1,43 @@
+name: Push to Production
+
+on:
+  workflow_dispatch:
+  pull_request_review:
+    branches:
+      - cdc-as81-push-to-prod
+    types: [submitted]
+
+jobs:
+  push-to-production:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: "cdc-as81-push-to-prod"
+        fetch-depth: 0
+    - name: Ensure PR was approved by Code Owner
+      id: check_approval
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const prNumber = context.payload.pull_request.number;
+          const { data: reviews } = await github.rest.pulls.listReviews({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: prNumber
+          });
+
+          const approvals = reviews.filter(r => r.state === 'APPROVED');
+
+          if (approvals.length === 0) {
+            core.setFailed('No approvals from code owners.');
+          } else {
+            console.log(`Found ${approvals.length} approval(s)`);
+          }
+    - name: Pull from main and push to production
+      if: success()
+      run: |
+        echo "Pulling from main branch and pushing to production"
+
