@@ -28,7 +28,8 @@ jobs:
             repo: context.repo.repo,
             pull_number: prNumber
           });
-          const codeOwners = ['cdc-as81', 'gilsharon321']; // Replace with actual code owners
+          //const codeOwners = ['cdc-as81', 'gilsharon321']; // Replace with actual code owners
+          const codeOwners = ['cdc-as81']; // Replace with actual code owners
           const reviewsFromCodeOwners = reviews.filter(r =>
             r.state === 'APPROVED' && codeOwners.includes(r.user.login));
 
