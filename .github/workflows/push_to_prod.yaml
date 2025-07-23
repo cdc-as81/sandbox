@@ -28,7 +28,6 @@ jobs:
             repo: context.repo.repo,
             pull_number: prNumber
           });
-          console.log(context.repo.owner);
           const codeOwners = ['cdc-as81', 'gilsharon321']; // Replace with actual code owners
           const reviewsFromCodeOwners = reviews.filter(r =>
             r.state === 'APPROVED' && codeOwners.includes(r.user.login));
@@ -36,7 +35,7 @@ jobs:
           if (reviewsFromCodeOwners.length === 0) {
             core.setFailed('No approvals from code owners.');
           } else {
-            console.log(`Found ${approvals.length} approval(s)`);
+            console.log(`Found ${reviewsFromCodeOwners.length} approvals from code owners`);
           }
     - name: Pull from main and push to production
       if: success()
