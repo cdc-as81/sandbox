@@ -17,8 +17,9 @@ jobs:
         ref: "main"
         fetch-depth: 0
     - name: List .github directory
-      run: ls -la        
-      run: ls -la .github        
+      run: |
+        ls -la        
+        ls -la .github        
     - name: Ensure PR was approved by Code Owner
       id: check_approval
       uses: actions/github-script@v7
