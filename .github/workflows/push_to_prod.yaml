@@ -31,7 +31,8 @@ jobs:
           //const codeOwners = ['cdc-as81', 'gilsharon321']; // Replace with actual code owners
           const fs = require('fs');
           const path = require('path');
-          const codeownersPath = path.join(process.env.GITHUB_WORKSPACE, '.github', 'CODEOWNERS');
+          //const codeownersPath = path.join(process.env.GITHUB_WORKSPACE, '.github', 'CODEOWNERS');
+          const codeownersPath = path.join('.github', 'CODEOWNERS');
           let codeOwners = [];
           try {
             const codeownersContent = fs.readFileSync(codeownersPath, 'utf8');
