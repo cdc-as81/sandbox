@@ -29,7 +29,22 @@ jobs:
             pull_number: prNumber
           });
           //const codeOwners = ['cdc-as81', 'gilsharon321']; // Replace with actual code owners
-          const codeOwners = ['cdc-as81']; // Replace with actual code owners
+          const fs = require('fs');
+          const path = require('path');
+          const codeownersPath = path.join(process.env.GITHUB_WORKSPACE, '.github', 'CODEOWNERS');
+          let codeOwners = [];
+          try {
+            const codeownersContent = fs.readFileSync(codeownersPath, 'utf8');
+            codeOwners = codeownersContent
+              .split('\n')
+              .map(line => line.trim())
+              .filter(line => line && !line.startsWith('#'))
+              .flatMap(line => line.split(/\s+/).slice(1)) // skip the pattern, get owners
+              .map(owner => owner.startsWith('@') ? owner.slice(1) : owner)
+              .filter((owner, idx, arr) => arr.indexOf(owner) === idx); // unique
+          } catch (err) {
+            core.setFailed(`Failed to read CODEOWNERS: ${err.message}`);
+          }
           const reviewsFromCodeOwners = reviews.filter(r =>
             r.state === 'APPROVED' && codeOwners.includes(r.user.login));
 
